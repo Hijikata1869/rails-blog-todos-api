@@ -3,8 +3,9 @@ module Api
     def create
       user = User.new(user_params)
       if user.save
+        token = create_token(user.id)
         # ログイン処理を追加し、accessというプロパティにアクセストークンを値でセットしてフロントエンドに送る
-        render json: { data: user }, status: :ok
+        render json: { user: user, access: token }, status: :ok
       else
         render json: { message: 'FAILED'}, status: 400
       end
