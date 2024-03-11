@@ -1,6 +1,6 @@
 module Api
   class TasksController < ApplicationController
-    before_action :authenticate_user, only: [:create, :destroy]
+    before_action :authenticate_user, only: [:create, :destroy, :update]
 
     def index
       tasks = Task.all
@@ -9,7 +9,7 @@ module Api
 
     def create 
       task = Task.new(task_params)
-      if task.create
+      if task.save
         render json: {}, status: :ok
       else
         render json: {}, status: 422
@@ -22,11 +22,11 @@ module Api
     end
 
     def update
-      task = Taks.find(params[:id])
-      if task.update(title: params[:title])
+      task = Task.find(params[:id])
+      if task.update(task_params)
         render json: {}, status: :ok
       else
-        render json: {}, stauts: 422
+        render json: {}, status: 422
       end
     end
 
